@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.12" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrdersApplication.ApplicationService\OrdersApplication.ApplicationService.csproj" />
+    <ProjectReference Include="..\OrdersApplication.Domain\OrdersApplication.Domain.csproj" />
+    <ProjectReference Include="..\OrdersApplications.SharedKernel\OrdersApplications.SharedKernel.csproj" />
+  </ItemGroup>
+
+
+</Project>
