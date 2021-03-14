@@ -38,7 +38,6 @@ namespace OrdersApplication.ConsoleApp
 
         private static IConfiguration Configure()
         {
-            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var builder = new ConfigurationBuilder()
                 .AddJsonFile($"appsettings.json", true, true);
 

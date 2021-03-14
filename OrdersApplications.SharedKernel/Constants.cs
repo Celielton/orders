@@ -10,5 +10,6 @@
         public const string API_URL = "https://localhost:5001/api";
         public const string QUEUE_CONNECTION = "queueconnection";
         public const string MESSAGE_PROCESSED = "processed";
+        public const string CONFIRMATION_TABLE_NAME = "processed";
     }
 }

@@ -2,13 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using OrdersApplications.SharedKernel.Interfaces;
 using System;
 using System.Threading.Tasks;
 
 namespace OrdersApplications.SharedKernel.Broker
 {
-    //: IConsumer<T>
-    public abstract class Consumer<T> where T : class
+    public abstract class Consumer<T> 
     {
         protected readonly QueueClient _queueClient;
         protected readonly Random _random;
@@ -25,7 +25,7 @@ namespace OrdersApplications.SharedKernel.Broker
             _queueClient.CreateIfNotExists();
             var account = CloudStorageAccount.Parse(configuration.GetSection(Constants.QUEUE_CONNECTION).Value);
             var client = account.CreateCloudTableClient();
-            _table = client.GetTableReference("confirmations");
+            _table = client.GetTableReference(Constants.CONFIRMATION_TABLE_NAME);
             _table.CreateIfNotExistsAsync().ConfigureAwait(false).GetAwaiter();
         }
 
@@ -34,20 +34,5 @@ namespace OrdersApplications.SharedKernel.Broker
             TableOperation insertOperation = TableOperation.InsertOrReplace(entity);
             await _table.ExecuteAsync(insertOperation);
         }
-    }
-
-    public class ConfirmationEntity : TableEntity
-    {
-        public ConfirmationEntity(int orderId, Guid agentId, string orderStatus)
-        {
-            this.OrderId = orderId;
-            this.AgentId = agentId;
-            OrderStatus = orderStatus;
-            this.PartitionKey = orderId.ToString(); this.RowKey = agentId.ToString();
-        }
-
-        public int OrderId { get; set; }
-        public Guid AgentId { get; set; }
-        public string OrderStatus { get; set; }
     }
 }
