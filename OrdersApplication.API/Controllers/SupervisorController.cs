@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrdersApplication.ApplicationService.Commands;
-using OrdersApplication.ApplicationService.Interfaces;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace OrdersApplication.API.Controllers
@@ -10,31 +11,27 @@ namespace OrdersApplication.API.Controllers
     [Route("api/[controller]")]
     public class SupervisorController : ControllerBase
     {
-
-        private readonly ILogger _logger;
-        private readonly IOrderSupervisorAppService _orderSupervisorAppService;
-
-
-        public SupervisorController(IOrderSupervisorAppService orderSupervisorAppService, ILogger<SupervisorController> logger)
+        private readonly IMediator _mediator;
+        private readonly ILogger<SupervisorController> _logger;
+        public SupervisorController( ILogger<SupervisorController> logger, IMediator mediator)
         {
             _logger = logger;
-            _orderSupervisorAppService = orderSupervisorAppService;
-
+            _mediator = mediator;
         }
 
         [HttpPost]
         [Route("Order")]
         public async Task<IActionResult> Order(OrderCommand cmd)
         {
-            await _orderSupervisorAppService.CreateOrderAsync(cmd);
-            return Ok();
+            await _mediator.Send(cmd);
+            return StatusCode((int)HttpStatusCode.Created);
         }
 
         [HttpPost]
         [Route("Confirmation")]
-        public IActionResult Confirmation(ConfirmationCommand cmd)
+        public async Task<IActionResult> Confirmation(ConfirmationCommand cmd)
         {
-            _orderSupervisorAppService.ReceiveConfirmation(cmd);
+            await _mediator.Publish(cmd);
             return Ok();
         }
     }

@@ -1,6 +1,8 @@
-﻿namespace OrdersApplication.ApplicationService.Commands
+﻿using MediatR;
+
+namespace OrdersApplication.ApplicationService.Commands
 {
-    public class OrderCommand
+    public class OrderCommand : BaseCommand
     {
         public string OrderText { get; set; }
     }

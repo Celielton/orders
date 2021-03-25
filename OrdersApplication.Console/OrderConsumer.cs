@@ -45,6 +45,7 @@ namespace OrdersApplication.ConsoleApp
                     }
                     else
                     {
+                        //what about here If for any reason my application stop and I miss any step?
                         _log.Info(string.Format(Constants.ORDER_RECEIVED, order.Id, order.Text));
                         await DeleteMessageAsync(message);
                         await SabeToTable(new ConfirmationEntity(order.Id, AgentId, Constants.MESSAGE_PROCESSED));

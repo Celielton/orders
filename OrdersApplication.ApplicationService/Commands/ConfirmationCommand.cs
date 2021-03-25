@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MediatR;
+using System;
 
 namespace OrdersApplication.ApplicationService.Commands
 {
-    public class ConfirmationCommand
+    public class ConfirmationCommand : INotification
     {
         public int OrderId { get; set; }
         public Guid AgentId { get; set; }
